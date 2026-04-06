@@ -1,0 +1,39 @@
+# Этот .gitignore создан для iOS/Xcode-проекта.
+# Он защищает репозиторий от временных файлов, системного мусора macOS,
+# служебных настроек Xcode, а также артефактов SwiftPM, CocoaPods, Carthage и Fastlane.
+# Благодаря этому файлу, в репозитории остаются только важные файлы проекта.
+
+# Xcode
+DerivedData/
+build/ 
+*.pbxuser 
+!default.pbxuser 
+*.mode1v3 
+!default.mode1v3 
+*.mode2v3 
+!default.mode2v3 
+*.perspectivev3 
+!default.perspectivev3 
+xcuserdata/ 
+  
+# Swift Package Manager 
+.build/ 
+  
+# CocoaPods 
+Pods/ 
+Podfile.lock 
+  
+# Carthage 
+Carthage/ 
+  
+# Fastlane 
+fastlane/report.xml 
+fastlane/Preview.html 
+fastlane/screenshots/**/*.png 
+fastlane/test_output 
+  
+# MacOS 
+.DS_Store 
+
+# AppCode 
+.idea/
