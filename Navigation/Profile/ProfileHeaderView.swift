@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import StorageService
 
 final class ProfileHeaderView: UITableViewHeaderFooterView {
     
