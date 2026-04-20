@@ -100,14 +100,25 @@ final class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let user = User(
+        let currentUser = User(
             login: "HipsterCat",
             fullName: "Hipster Cat",
             avatar: UIImage(named: "hipster_cat") ?? UIImage(),
             status: "Waiting for something..."
         )
         
-        userService = CurrentUserService(user: user)
+        let testUser = User(
+            login: "TestUser",
+            fullName: "Test User",
+            avatar: UIImage(named: "testing_user") ?? UIImage(),
+            status: "Just testing..."
+        )
+        
+        #if DEBUG
+        userService = TestUserService(user: testUser)
+        #else
+        userService = CurrentUserService(user: currentUser)
+        #endif
         
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.isHidden = true
