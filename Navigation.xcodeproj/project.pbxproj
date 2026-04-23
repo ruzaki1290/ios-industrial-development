@@ -80,8 +80,6 @@
 		36C5F0642850C9D1005EFC6C /* PostExamples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostExamples.swift; sourceTree = "<group>"; };
 		65963DF62F83D9040018DEC9 /* StorageService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StorageService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7E7EAC595876094C46B8B12 /* Pods_Navigation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Navigation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6E65DB26F6B7820BC220805 /* Pods-Navigation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Navigation.debug.xcconfig"; path = "Target Support Files/Pods-Navigation/Pods-Navigation.debug.xcconfig"; sourceTree = "<group>"; };
-		D8C09576250A5C2EBCEC8BF4 /* Pods-Navigation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Navigation.release.xcconfig"; path = "Target Support Files/Pods-Navigation/Pods-Navigation.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -118,7 +116,6 @@
 				65963DF72F83D9040018DEC9 /* StorageService */,
 				65963E2B2F862FDC0018DEC9 /* Frameworks */,
 				3601A2A528490DDF000D261A /* Products */,
-				DE58A2534B0AEFADE66BB443 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -182,15 +179,6 @@
 				B7E7EAC595876094C46B8B12 /* Pods_Navigation.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DE58A2534B0AEFADE66BB443 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D6E65DB26F6B7820BC220805 /* Pods-Navigation.debug.xcconfig */,
-				D8C09576250A5C2EBCEC8BF4 /* Pods-Navigation.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -527,7 +515,6 @@
 		};
 		3601A2B928490DDF000D261A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6E65DB26F6B7820BC220805 /* Pods-Navigation.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -561,7 +548,6 @@
 		};
 		3601A2BA28490DDF000D261A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C09576250A5C2EBCEC8BF4 /* Pods-Navigation.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
