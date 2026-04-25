@@ -9,6 +9,9 @@ final class LoginViewController: UIViewController {
     
     // MARK: Visual content
     
+    // Dependancy
+    private var userService: UserService!
+    
     var loginScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -97,6 +100,26 @@ final class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let currentUser = User(
+            login: "HipsterCat",
+            fullName: "Hipster Cat",
+            avatar: UIImage(named: "hipster_cat") ?? UIImage(),
+            status: "Waiting for something..."
+        )
+        
+        let testUser = User(
+            login: "TestUser",
+            fullName: "Test User",
+            avatar: UIImage(named: "testing_user") ?? UIImage(),
+            status: "Just testing..."
+        )
+        
+        #if DEBUG
+        userService = TestUserService(user: testUser)
+        #else
+        userService = CurrentUserService(user: currentUser)
+        #endif
+        
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.isHidden = true
         
@@ -166,10 +189,34 @@ final class LoginViewController: UIViewController {
 
     }
     
+    private func showAlert(message: String) {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
     // MARK: - Event handlers
 
     @objc private func touchLoginButton() {
+        
+        guard let login = loginField.text, !login.isEmpty else {
+            showAlert(message: "Введите логин")
+            return
+        }
+        
+        guard let user = userService.checkUser(login: login) else {
+            showAlert(message: "Неверный логин")
+            return
+        }
+        
         let profileVC = ProfileViewController()
+        profileVC.user = user
+        
         navigationController?.setViewControllers([profileVC], animated: true)
     }
 

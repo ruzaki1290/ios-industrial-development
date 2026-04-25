@@ -42,7 +42,7 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
     
     private func setupNameLabel() {
         
-        fullNameLabel.text = "Teo West"
+        fullNameLabel.text = ""
         fullNameLabel.font = .boldSystemFont(ofSize: 18)
         fullNameLabel.textColor = .black
         addSubview(fullNameLabel)
@@ -84,7 +84,7 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
         statusTextField.layer.borderWidth = 1
         statusTextField.layer.borderColor = UIColor.gray.cgColor
         statusTextField.attributedPlaceholder = NSAttributedString.init(
-            string: "Ready...", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+            string: "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         )
         
         statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
@@ -124,7 +124,7 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
     
     private func setupAvatarImage() {
         
-        avatarImageView.image = UIImage(named: "teo")
+        avatarImageView.image = nil
         avatarImageView.layer.cornerRadius = 64
         avatarImageView.layer.borderWidth = 3
         avatarImageView.layer.borderColor = UIColor.white.cgColor
@@ -164,6 +164,16 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
             make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-16)
         }
         
+    }
+    
+    var user: User? {
+        didSet {
+            guard let user else { return }
+            fullNameLabel.text = user.fullName
+            statusLabel.text = user.status
+            avatarImageView.image = user.avatar
+            statusText = user.status
+        }
     }
     
     // MARK: - Event handlers

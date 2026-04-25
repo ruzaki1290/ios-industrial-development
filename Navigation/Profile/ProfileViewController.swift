@@ -8,6 +8,8 @@ import StorageService
 
 final class ProfileViewController: UIViewController {
     
+    var user: User?
+    
     static let headerIdent = "header"
     static let photoIdent = "photo"
     static let postIdent = "post"
@@ -24,6 +26,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Setup section
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         #if DEBUG
@@ -38,7 +41,8 @@ final class ProfileViewController: UIViewController {
         Self.postTableView.delegate = self
         Self.postTableView.refreshControl = UIRefreshControl()
         Self.postTableView.refreshControl?.addTarget(self, action: #selector(reloadTableView), for: .valueChanged)
-    }
+        
+    } // viewDidLoad()
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -53,7 +57,9 @@ final class ProfileViewController: UIViewController {
         Self.postTableView.reloadData()
         Self.postTableView.refreshControl?.endRefreshing()
     }
-}
+    
+    
+} // UIViewController
 
 // MARK: - Extensions
 
@@ -94,6 +100,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Self.headerIdent) as! ProfileHeaderView
+        headerView.user = user
         return headerView
     }
 
