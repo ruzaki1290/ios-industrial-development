@@ -9,13 +9,15 @@ final class Checker {
     
     static let shared = Checker()
     
+    private let users: [String: String] = [
+        "HipsterCat": "12345",
+        "TestUser": "abcde"
+    ]
+    
     private init() {}
     
-    private let login = "Rus"
-    private let password = "12345"
-    
     func check(login: String, password: String) -> Bool {
-        return self.login == login && self.password == password
+        return users[login] == password
     }
     
 }
