@@ -100,7 +100,8 @@ final class LoginViewController: UIViewController {
         
         super.viewDidLoad()
         
-        loginDelegate = LoginInspector()
+        let loginFactory: LoginFactory = MyLoginFactory()
+        loginDelegate = loginFactory.makeLoginInspector()
         
         let currentUser = User(
             login: "HipsterCat",
