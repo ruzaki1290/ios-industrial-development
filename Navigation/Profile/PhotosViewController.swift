@@ -4,10 +4,15 @@
 //
 
 import UIKit
+import iOSIntPackage
 
 class PhotosViewController: UIViewController {
     
     let photoIdent = "photoCell"
+    
+    private let imagePublisher = ImagePublisherFacade()
+    private var images = Photos.shared.examples
+
 
     // MARK: Visual objects
     
@@ -38,8 +43,21 @@ class PhotosViewController: UIViewController {
         self.photosCollectionView.dataSource = self
         self.photosCollectionView.delegate = self
         setupConstraints()
+        
+        imagePublisher.subscribe(self)
+        imagePublisher.addImagesWithTimer(
+            time: 0.5,
+            repeat: 15,
+            userImages: images
+        )
+                
     }
     
+    deinit {
+        imagePublisher.removeSubscription(for: self)
+        print("PhotosViewController deinit")
+    }
+        
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             photosCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -57,11 +75,11 @@ class PhotosViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = true
+        imagePublisher.removeSubscription(for: self)
     }
 }
 
 // MARK: - Extensions
-
 extension PhotosViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -75,13 +93,23 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
 extension PhotosViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Photos.shared.examples.count
+        return images.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: photoIdent, for: indexPath) as? PhotosCollectionViewCell else { return UICollectionViewCell()}
-        cell.configCellCollection(photo: Photos.shared.examples[indexPath.item])
+        cell.configCellCollection(photo: images[indexPath.item])
         return cell
     }
+    
 }
 
+extension PhotosViewController: ImageLibrarySubscriber {
+    func receive(images: [UIImage]) {
+        self.images = images
+        
+        DispatchQueue.main.async {
+            self.photosCollectionView.reloadData()
+        }
+    }
+}
