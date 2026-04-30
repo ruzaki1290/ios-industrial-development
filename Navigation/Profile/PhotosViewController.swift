@@ -11,7 +11,7 @@ class PhotosViewController: UIViewController {
     let photoIdent = "photoCell"
     
     private let imagePublisher = ImagePublisherFacade()
-    private var images: [UIImage] = []
+    private var images = Photos.shared.examples
 
 
     // MARK: Visual objects
@@ -45,7 +45,11 @@ class PhotosViewController: UIViewController {
         setupConstraints()
         
         imagePublisher.subscribe(self)
-        imagePublisher.addImagesWithTimer(time: 0.5, repeat: 15)
+        imagePublisher.addImagesWithTimer(
+            time: 0.5,
+            repeat: 15,
+            userImages: images
+        )
                 
     }
     
