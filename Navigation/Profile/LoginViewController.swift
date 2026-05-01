@@ -43,7 +43,7 @@ final class LoginViewController: UIViewController {
         stack.clipsToBounds = true
         return stack
     }()
-    
+    /*
     var loginButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -62,6 +62,10 @@ final class LoginViewController: UIViewController {
         button.clipsToBounds = true
         return button
     }()
+    */
+    private lazy var loginButton = CustomButton(title: "Войти") {
+        print("Login tapped")
+    }
     
     var loginField: UITextField = {
         let login = UITextField()
@@ -94,6 +98,7 @@ final class LoginViewController: UIViewController {
         password.returnKeyType = .done
         return password
     }()
+        
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -187,12 +192,18 @@ final class LoginViewController: UIViewController {
             loginStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: LayoutConstants.leadingMargin),
             loginStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: LayoutConstants.trailingMargin),
             loginStackView.heightAnchor.constraint(equalToConstant: 100),
-
+            
+            /*
             loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: LayoutConstants.indent),
             loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: LayoutConstants.leadingMargin),
             loginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: LayoutConstants.trailingMargin),
             loginButton.heightAnchor.constraint(equalToConstant: 50),
+            */
             
+            loginButton.heightAnchor.constraint(equalToConstant: 50),
+            loginButton.widthAnchor.constraint(equalToConstant: 200),
+            loginButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20)
         ])
         
     } // setupConstraints()
