@@ -43,28 +43,9 @@ final class LoginViewController: UIViewController {
         stack.clipsToBounds = true
         return stack
     }()
-    /*
-    var loginButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        if let pixel = UIImage(named: "blue_pixel") {
-            button.setBackgroundImage(pixel.image(alpha: 1), for: .normal)
-            button.setBackgroundImage(pixel.image(alpha: 0.8), for: .selected)
-            button.setBackgroundImage(pixel.image(alpha: 0.6), for: .highlighted)
-            button.setBackgroundImage(pixel.image(alpha: 0.4), for: .disabled)
-        }
-
-        button.setTitle("Login", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.addTarget(nil, action: #selector(touchLoginButton), for: .touchUpInside)
-        button.layer.cornerRadius = LayoutConstants.cornerRadius
-        button.clipsToBounds = true
-        return button
-    }()
-    */
-    private lazy var loginButton = CustomButton(title: "Войти") {
-        print("Login tapped")
+    
+    private lazy var loginButton = CustomButton(title: "Войти") { [weak self] in
+        self?.touchLoginButton()
     }
     
     var loginField: UITextField = {
@@ -192,13 +173,6 @@ final class LoginViewController: UIViewController {
             loginStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: LayoutConstants.leadingMargin),
             loginStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: LayoutConstants.trailingMargin),
             loginStackView.heightAnchor.constraint(equalToConstant: 100),
-            
-            /*
-            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: LayoutConstants.indent),
-            loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: LayoutConstants.leadingMargin),
-            loginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: LayoutConstants.trailingMargin),
-            loginButton.heightAnchor.constraint(equalToConstant: 50),
-            */
             
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             loginButton.widthAnchor.constraint(equalToConstant: 200),
