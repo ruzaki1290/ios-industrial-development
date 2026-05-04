@@ -12,6 +12,7 @@ final class FeedViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemTeal
+        setupGuessViews()
         
         createSubView()
     }
@@ -44,6 +45,67 @@ final class FeedViewController: UIViewController {
         view.addArrangedSubview(button)
     }
     
+    private let feedModel = FeedModel()
+    
+    private let guessTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Введите слово"
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
+    private let resultLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Введите слово и проверьте"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var checkGuessButton = CustomButton(title: "Проверить") {
+        [weak self] in self?.checkGuess()
+    }
+    
+    private func checkGuess() {
+        guard let word = guessTextField.text, !word.isEmpty else {
+            resultLabel.text = "Введите слово"
+            resultLabel.textColor = .systemRed
+            return
+        }
+        
+        let isCorrect = feedModel.check(word: word)
+        
+        if isCorrect {
+            resultLabel.text = "Верно! 😃"
+            resultLabel.textColor = .systemYellow
+        } else {
+            resultLabel.text = "Неверно ☹️"
+            resultLabel.textColor = .systemRed
+        }
+    }
+    
+    private func setupGuessViews() {
+        view.addSubview(guessTextField)
+        view.addSubview(checkGuessButton)
+        view.addSubview(resultLabel)
+        
+        NSLayoutConstraint.activate([
+            
+            guessTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            guessTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            guessTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            guessTextField.heightAnchor.constraint(equalToConstant: 44),
+            
+            checkGuessButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            checkGuessButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            checkGuessButton.topAnchor.constraint(equalTo: guessTextField.bottomAnchor, constant: 16),
+            checkGuessButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            resultLabel.topAnchor.constraint(equalTo: checkGuessButton.bottomAnchor, constant: 16),
+            resultLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            resultLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
+        ])
+    }
+    
     @objc func tapPostButton() {
         let post = postExamples[0]
         
@@ -51,4 +113,7 @@ final class FeedViewController: UIViewController {
         postVC.post = post
         navigationController?.pushViewController(postVC, animated: true)
     }
-}
+    
+} //FeedViewController
+
+

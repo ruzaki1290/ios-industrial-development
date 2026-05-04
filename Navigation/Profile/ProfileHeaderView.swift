@@ -16,7 +16,7 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
     var statusLabel = UILabel()
     var statusTextField = UITextField()
     lazy var setStatusButton = CustomButton(title: "Show status") { [weak self] in
-        self?.didTapSetStatus()
+        self?.statusButtonPressed()
     }
     lazy var returnAvatarButton = CustomButton(title: "") { [weak self] in
         self?.didTapOnAvatar()
