@@ -15,8 +15,12 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
     var avatarImageView = UIImageView()
     var statusLabel = UILabel()
     var statusTextField = UITextField()
-    var setStatusButton = UIButton()
-    var returnAvatarButton = UIButton()
+    lazy var setStatusButton = CustomButton(title: "Show status") { [weak self] in
+        self?.statusButtonPressed()
+    }
+    lazy var returnAvatarButton = CustomButton(title: "") { [weak self] in
+        self?.didTapOnAvatar()
+    }
     var avatarBackground = UIView()
     
     private var statusText = "Ready to help"
@@ -38,6 +42,12 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
 
     required init?(coder: NSCoder) {
         fatalError("lol")
+    }
+    
+    private func didTapSetStatus() {
+        print("Status button tapped")
+        
+        statusLabel.text = statusTextField.text
     }
     
     private func setupNameLabel() {
@@ -110,7 +120,6 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
         setStatusButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         setStatusButton.setTitle("Show status", for: .normal)
         setStatusButton.setTitleColor(.white, for: .normal)
-        setStatusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
         addSubview(setStatusButton)
         
         setStatusButton.snp.makeConstraints { make in
@@ -143,7 +152,6 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
         returnAvatarButton.contentMode = .scaleToFill
         returnAvatarButton.setImage(UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22))?.withTintColor(.black, renderingMode: .automatic), for: .normal)
         returnAvatarButton.tintColor = .black
-        returnAvatarButton.addTarget(self, action: #selector(returnAvatarToOrigin), for: .touchUpInside)
         
         // translucent background for the modal animation mode
         avatarBackground = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
@@ -164,6 +172,10 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
             make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-16)
         }
         
+    }
+    
+    private func didTapReturnAvatar() {
+        print("Return avatar button tapped")
     }
     
     var user: User? {
