@@ -214,8 +214,9 @@ final class LoginViewController: UIViewController {
                 return
             }
             
-            let profileVC = ProfileViewController()
-            profileVC.user = user
+            let viewModel = ProfileViewModel(userService: userService, user: user)
+            
+            let profileVC = ProfileViewController(viewModel: viewModel)
             
             navigationController?.setViewControllers([profileVC], animated: true)
         } else {
