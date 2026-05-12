@@ -30,5 +30,9 @@ final class ProfileViewModel {
         user.status
     }
     
+    var profileUser: User {
+        user
+    }
+    
 } // ProfileViewModel
 

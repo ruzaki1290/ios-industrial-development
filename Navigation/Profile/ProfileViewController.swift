@@ -8,7 +8,7 @@ import StorageService
 
 final class ProfileViewController: UIViewController {
     
-    var user: User?
+
     
     private let viewModel: ProfileViewModel
     
@@ -112,7 +112,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Self.headerIdent) as! ProfileHeaderView
-        headerView.user = user
+        headerView.user = viewModel.profileUser
         return headerView
     }
 
