@@ -41,6 +41,10 @@ final class ProfileViewController: UIViewController {
         
         super.viewDidLoad()
         
+        bindViewModel()
+        viewModel.loadUser()
+        
+        
         #if DEBUG
         view.backgroundColor = .systemPurple
         #else
@@ -55,6 +59,32 @@ final class ProfileViewController: UIViewController {
         Self.postTableView.refreshControl?.addTarget(self, action: #selector(reloadTableView), for: .valueChanged)
         
     } // viewDidLoad()
+    
+    
+    // MARK: - Methods
+    private func bindViewModel() {
+        viewModel.onStateChanged = { [weak self] state in
+            self?.render(state: state)
+        }
+    }
+    
+    private func render(state: ProfileViewModelState) {
+        
+        switch state {
+        case .initial:
+            break
+        
+        case .loading:
+            break
+        
+        case .loaded:
+            Self.postTableView.reloadData()
+            
+        case .error(let message):
+            print(message)
+        }
+        
+    }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([

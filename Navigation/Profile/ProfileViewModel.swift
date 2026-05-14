@@ -5,11 +5,23 @@
 
 import UIKit
 
+
+enum ProfileViewModelState {
+    case initial
+    case loading
+    case loaded(User)
+    case error(String)
+}
+
 final class ProfileViewModel {
     
     // MARK: - Properties
     private let userService: UserService
     private let user: User
+    
+    private(set) var state: ProfileViewModelState = .initial
+    
+    var onStateChanged: ((ProfileViewModelState) -> Void)?
     
     // MARK: - Init
     init(userService: UserService, user: User) {
@@ -32,6 +44,18 @@ final class ProfileViewModel {
     
     var profileUser: User {
         user
+    }
+    
+     // MARK: - Methods
+    private func updateState(_ newState: ProfileViewModelState) {
+        state = newState
+        onStateChanged?(newState)
+    }
+    
+    func loadUser() {
+        updateState(.loading)
+        
+        updateState(.loaded(user))
     }
     
 } // ProfileViewModel
