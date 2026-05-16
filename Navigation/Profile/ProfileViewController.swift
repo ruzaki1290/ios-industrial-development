@@ -8,7 +8,9 @@ import StorageService
 
 final class ProfileViewController: UIViewController {
     
-    var user: User?
+
+    
+    private let viewModel: ProfileViewModel
     
     static let headerIdent = "header"
     static let photoIdent = "photo"
@@ -23,11 +25,25 @@ final class ProfileViewController: UIViewController {
         return table
     }()
     
+    // MARK: - Init
+    init(viewModel: ProfileViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Setup section
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        bindViewModel()
+        viewModel.loadUser()
+        
         
         #if DEBUG
         view.backgroundColor = .systemPurple
@@ -43,6 +59,32 @@ final class ProfileViewController: UIViewController {
         Self.postTableView.refreshControl?.addTarget(self, action: #selector(reloadTableView), for: .valueChanged)
         
     } // viewDidLoad()
+    
+    
+    // MARK: - Methods
+    private func bindViewModel() {
+        viewModel.onStateChanged = { [weak self] state in
+            self?.render(state: state)
+        }
+    }
+    
+    private func render(state: ProfileViewModelState) {
+        
+        switch state {
+        case .initial:
+            break
+        
+        case .loading:
+            break
+        
+        case .loaded:
+            Self.postTableView.reloadData()
+            
+        case .error(let message):
+            print(message)
+        }
+        
+    }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -100,7 +142,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Self.headerIdent) as! ProfileHeaderView
-        headerView.user = user
+        headerView.user = viewModel.profileUser
         return headerView
     }
 
