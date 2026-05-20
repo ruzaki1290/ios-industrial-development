@@ -27,14 +27,16 @@ final class AppCoordinator: Coordinator {
                                             selectedImage: UIImage(systemName: "person.crop.circle.fill")
         )
         
-        let feedVC = FeedViewController()
-        let feedNC = UINavigationController(rootViewController: feedVC)
-        feedNC.tabBarItem = UITabBarItem(title: "Feed",
-                                         image: UIImage(systemName: "text.bubble"),
-                                         selectedImage: UIImage(systemName: "text.bubble.fill"))
+        let feedVC = FeedCoordinator(
+            navigationController: UINavigationController()
+        )
+        
+        feedVC.start()
 
         tabBarController.tabBar.backgroundColor = .white
-        tabBarController.viewControllers = [profileNC, feedNC]
+        tabBarController.viewControllers = [
+            profileNC, feedVC.navigationController
+        ]
         
         // activate main window
         window.rootViewController = tabBarController
