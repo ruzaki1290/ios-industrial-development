@@ -11,6 +11,8 @@ final class LoginViewController: UIViewController {
     var loginDelegate: LoginViewControllerDelegate?
     private var userService: UserService!
     
+    weak var coordinator: ProfileCoordinator?
+    
     // MARK: - UI Elements
     var loginScrollView: UIScrollView = {
         let scrollView = UIScrollView()
