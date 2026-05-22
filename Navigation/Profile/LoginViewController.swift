@@ -216,11 +216,8 @@ final class LoginViewController: UIViewController {
                 return
             }
             
-            let viewModel = ProfileViewModel(userService: userService, user: user)
-            
-            let profileVC = ProfileViewController(viewModel: viewModel)
-            
-            navigationController?.setViewControllers([profileVC], animated: true)
+            coordinator?.showProfile(user: user)
+
         } else {
             showAlert(message: "Неверный логин и пароль")
         }

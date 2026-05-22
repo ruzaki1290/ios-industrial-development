@@ -28,19 +28,22 @@ final class ProfileCoordinator: Coordinator {
         
     }
     
-    func showProfile() {
+    func showProfile(user: User) {
+        /*
         let user = User(
             login: "User",
             fullName: "User Name",
             avatar: UIImage(named: "hipster_cat") ?? UIImage(),
             status: "Hello"
         )
+        */
         
         let userService = CurrentUserService(user: user)
         let viewModel = ProfileViewModel(userService: userService, user: user)
         let profileVC = ProfileViewController(viewModel: viewModel)
         
         navigationController.pushViewController(profileVC, animated: true)
+        
     }
     
     
