@@ -7,6 +7,8 @@ import UIKit
 import StorageService
 
 final class FeedViewController: UIViewController {
+    
+    weak var coordinator: FeedCoordinator?
 
     override func viewDidLoad() {
         super.viewDidLoad()

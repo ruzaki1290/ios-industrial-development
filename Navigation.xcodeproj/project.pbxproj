@@ -92,6 +92,7 @@
 		654EC2152F8A2DA4009CE88B /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 		654EC21F2F8CC6FB009CE88B /* Services */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Services; sourceTree = "<group>"; };
 		65963DF72F83D9040018DEC9 /* StorageService */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = StorageService; sourceTree = "<group>"; };
+		65EE9FC52FB8468B006F9118 /* Coordinators */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Coordinators; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +139,7 @@
 		3601A2A628490DDF000D261A /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				65EE9FC52FB8468B006F9118 /* Coordinators */,
 				653CF20F2FA4726D00EB6DB0 /* UI */,
 				6503E8F52F9CCCD40088C35B /* Factories */,
 				6503E8E92F9B57970088C35B /* Protocols */,
@@ -225,6 +227,7 @@
 				653CF20F2FA4726D00EB6DB0 /* UI */,
 				654EC2152F8A2DA4009CE88B /* Models */,
 				654EC21F2F8CC6FB009CE88B /* Services */,
+				65EE9FC52FB8468B006F9118 /* Coordinators */,
 			);
 			name = Navigation;
 			productName = Navigation;

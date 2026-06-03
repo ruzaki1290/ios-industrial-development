@@ -11,6 +11,8 @@ final class LoginViewController: UIViewController {
     var loginDelegate: LoginViewControllerDelegate?
     private var userService: UserService!
     
+    weak var coordinator: ProfileCoordinator?
+    
     // MARK: - UI Elements
     var loginScrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -214,11 +216,8 @@ final class LoginViewController: UIViewController {
                 return
             }
             
-            let viewModel = ProfileViewModel(userService: userService, user: user)
-            
-            let profileVC = ProfileViewController(viewModel: viewModel)
-            
-            navigationController?.setViewControllers([profileVC], animated: true)
+            coordinator?.showProfile(user: user)
+
         } else {
             showAlert(message: "Неверный логин и пароль")
         }
