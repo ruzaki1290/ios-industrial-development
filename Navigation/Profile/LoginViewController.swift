@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 final class LoginViewController: UIViewController {
     
@@ -216,6 +217,7 @@ final class LoginViewController: UIViewController {
             return
         }
         
+        
         let password = passwordField.text ?? ""
         
         delegate?.checkCredentials(
@@ -234,13 +236,76 @@ final class LoginViewController: UIViewController {
                 self.coordinator?.showProfile(user: user)
                 
             case .failure(let error):
-                self.showAlert(message: error.localizedDescription)
+                
+                let nsError = error as NSError
+
+                    if nsError.code == AuthErrorCode.userNotFound.rawValue {
+
+                        self.delegate?.signUp(
+                            email: login,
+                            password: password
+                        ) { [weak self] signUpResult in
+
+                            guard let self = self else { return }
+                            
+                            switch signUpResult {
+
+                            case .success:
+                                guard let user = self.userService.checkUser(login: login) else {
+                                    self.showAlert(message: "Пользователь зарегистрирован, но профиль не найден")
+                                    return
+
+                                }
+
+                                self.coordinator?.showProfile(user: user)
+
+                            case .failure(let error):
+                                self.showAlert(message: error.localizedDescription)
+                            }
+                        }
+                        
+                    } else {
+                        
+                        self.showAlert(message: error.localizedDescription)
+                        
+                    }
+                
             }
             
         }
             
         
     } // touchLoginButton()
+    
+    @objc private func touchSignUpButton() {
+
+        guard let email = loginField.text, !email.isEmpty else {
+            showAlert(message: "Введите email")
+            return
+        }
+
+        guard let password = passwordField.text, !password.isEmpty else {
+            showAlert(message: "Введите пароль")
+            return
+        }
+
+        delegate?.signUp(
+            email: email,
+            password: password
+        ) { [weak self] result in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                self.showAlert(message: "Пользователь успешно зарегистрирован")
+
+            case .failure(let error):
+                self.showAlert(message: error.localizedDescription)
+            }
+        }
+        
+    } // touchSignUpButton()
 
     // MARK: - Event Handlers: Keyboard
     @objc private func keyboardShow(notification: NSNotification) {
