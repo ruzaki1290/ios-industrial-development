@@ -8,9 +8,9 @@ import UIKit
 final class LoginViewController: UIViewController {
     
     // MARK: - Dependencies
-    var loginDelegate: LoginViewControllerDelegate?
+    private var loginInspector: LoginInspector?
+    private weak var delegate: LoginViewControllerDelegate?
     private var userService: UserService!
-    
     weak var coordinator: ProfileCoordinator?
     
     // MARK: - UI Elements
@@ -89,7 +89,10 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         let loginFactory: LoginFactory = MyLoginFactory()
-        loginDelegate = loginFactory.makeLoginInspector()
+        let inspector = loginFactory.makeLoginInspector()
+        
+        loginInspector = inspector
+        delegate = inspector
         
         let currentUser = User(
             login: "HipsterCat",
@@ -215,7 +218,7 @@ final class LoginViewController: UIViewController {
         
         let password = passwordField.text ?? ""
         
-        loginDelegate?.checkCredentials(
+        delegate?.checkCredentials(
             email: login,
             password: password
         ) { [weak self] result in
