@@ -208,19 +208,27 @@ final class LoginViewController: UIViewController {
         
         let password = passwordField.text ?? ""
         
-        let isValid = loginDelegate?.check(login: login, password: password) ?? false
-        
-        if isValid {
-            guard let user = userService.checkUser(login: login) else {
-                showAlert(message: "Пользователь не найден")
-                return
+        loginDelegate?.check(
+            login: login,
+            password: password
+        ) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                guard let user = self.userService.checkUser(login: login) else {
+                    self.showAlert(message: "Пользователь не найден")
+                    return
+                }
+                
+                self.coordinator?.showProfile(user: user)
+                
+            case .failure(let error):
+                self.showAlert(message: error.localizedDescription)
             }
             
-            coordinator?.showProfile(user: user)
-
-        } else {
-            showAlert(message: "Неверный логин и пароль")
         }
+            
         
     } // touchLoginButton()
 
