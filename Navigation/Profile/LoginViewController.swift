@@ -51,6 +51,10 @@ final class LoginViewController: UIViewController {
         self?.touchLoginButton()
     }
     
+    private lazy var signUpButton = CustomButton(title: "Регистрация") { [weak self] in
+        self?.touchSignUpButton()
+    }
+    
     var loginField: UITextField = {
         let login = UITextField()
         login.translatesAutoresizingMaskIntoConstraints = false
@@ -150,7 +154,7 @@ final class LoginViewController: UIViewController {
         view.addSubview(loginScrollView)
         loginScrollView.addSubview(contentView)
         
-        contentView.addSubviews(vkLogo, loginStackView, loginButton)
+        contentView.addSubviews(vkLogo, loginStackView, loginButton, signUpButton)
         
         loginStackView.addArrangedSubview(loginField)
         loginStackView.addArrangedSubview(passwordField)
@@ -190,7 +194,14 @@ final class LoginViewController: UIViewController {
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             loginButton.widthAnchor.constraint(equalToConstant: 200),
             loginButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20)
+            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20),
+            
+            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20),
+
+            signUpButton.heightAnchor.constraint(equalToConstant: 50),
+            signUpButton.widthAnchor.constraint(equalToConstant: 200),
+            signUpButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 12)
         ])
         
     } // setupConstraints()
