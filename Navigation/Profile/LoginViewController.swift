@@ -105,10 +105,17 @@ final class LoginViewController: UIViewController {
             status: "Just testing..."
         )
         
+        let firebaseUser = User(
+            login: "iosstudent@mail.com",
+            fullName: "iOS Student",
+            avatar: UIImage(named: "firebase_bear") ?? UIImage(),
+            status: "Let's build something!"
+        )
+        
         #if DEBUG
         userService = TestUserService(user: testUser)
         #else
-        userService = CurrentUserService(user: currentUser)
+        userService = CurrentUserService(user: firebaseUser)
         #endif
         
         view.backgroundColor = .systemBackground
