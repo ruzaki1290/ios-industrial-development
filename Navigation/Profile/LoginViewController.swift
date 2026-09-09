@@ -207,10 +207,10 @@ final class LoginViewController: UIViewController {
     } // setupConstraints()
     
     // MARK: - Alerts
-    private func showAlert(message: String) {
+    private func showAlert(title: String = "Ошибка", message: String) {
         
         let alert = UIAlertController(
-            title: "Ошибка",
+            title: title,
             message: message,
             preferredStyle: .alert
         )
@@ -309,7 +309,10 @@ final class LoginViewController: UIViewController {
             
             switch result {
             case .success:
-                self.showAlert(message: "Пользователь успешно зарегистрирован")
+                self.showAlert(
+                    title: "Успех! 😃",
+                    message: "Пользователь успешно зарегистрирован!"
+                )
 
             case .failure(let error):
                 self.showAlert(message: error.localizedDescription)
