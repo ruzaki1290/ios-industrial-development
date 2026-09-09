@@ -215,8 +215,8 @@ final class LoginViewController: UIViewController {
         
         let password = passwordField.text ?? ""
         
-        loginDelegate?.check(
-            login: login,
+        loginDelegate?.checkCredentials(
+            email: login,
             password: password
         ) { [weak self] result in
             guard let self = self else { return }
