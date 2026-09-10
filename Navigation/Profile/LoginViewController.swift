@@ -4,13 +4,14 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 final class LoginViewController: UIViewController {
     
     // MARK: - Dependencies
-    var loginDelegate: LoginViewControllerDelegate?
+    private var loginInspector: LoginInspector?
+    private weak var delegate: LoginViewControllerDelegate?
     private var userService: UserService!
-    
     weak var coordinator: ProfileCoordinator?
     
     // MARK: - UI Elements
@@ -48,6 +49,10 @@ final class LoginViewController: UIViewController {
     
     private lazy var loginButton = CustomButton(title: "Войти") { [weak self] in
         self?.touchLoginButton()
+    }
+    
+    private lazy var signUpButton = CustomButton(title: "Регистрация") { [weak self] in
+        self?.touchSignUpButton()
     }
     
     var loginField: UITextField = {
@@ -89,7 +94,10 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         let loginFactory: LoginFactory = MyLoginFactory()
-        loginDelegate = loginFactory.makeLoginInspector()
+        let inspector = loginFactory.makeLoginInspector()
+        
+        loginInspector = inspector
+        delegate = inspector
         
         let currentUser = User(
             login: "HipsterCat",
@@ -105,10 +113,17 @@ final class LoginViewController: UIViewController {
             status: "Just testing..."
         )
         
+        let firebaseUser = User(
+            login: "iosstudent@mail.com",
+            fullName: "iOS Student",
+            avatar: UIImage(named: "firebase_bear") ?? UIImage(),
+            status: "Let's build something!"
+        )
+        
         #if DEBUG
         userService = TestUserService(user: testUser)
         #else
-        userService = CurrentUserService(user: currentUser)
+        userService = CurrentUserService(user: firebaseUser)
         #endif
         
         view.backgroundColor = .systemBackground
@@ -139,7 +154,7 @@ final class LoginViewController: UIViewController {
         view.addSubview(loginScrollView)
         loginScrollView.addSubview(contentView)
         
-        contentView.addSubviews(vkLogo, loginStackView, loginButton)
+        contentView.addSubviews(vkLogo, loginStackView, loginButton, signUpButton)
         
         loginStackView.addArrangedSubview(loginField)
         loginStackView.addArrangedSubview(passwordField)
@@ -179,16 +194,23 @@ final class LoginViewController: UIViewController {
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             loginButton.widthAnchor.constraint(equalToConstant: 200),
             loginButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20)
+            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20),
+            
+            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20),
+
+            signUpButton.heightAnchor.constraint(equalToConstant: 50),
+            signUpButton.widthAnchor.constraint(equalToConstant: 200),
+            signUpButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 12)
         ])
         
     } // setupConstraints()
     
     // MARK: - Alerts
-    private func showAlert(message: String) {
+    private func showAlert(title: String = "Ошибка", message: String) {
         
         let alert = UIAlertController(
-            title: "Ошибка",
+            title: title,
             message: message,
             preferredStyle: .alert
         )
@@ -206,23 +228,98 @@ final class LoginViewController: UIViewController {
             return
         }
         
+        
         let password = passwordField.text ?? ""
         
-        let isValid = loginDelegate?.check(login: login, password: password) ?? false
-        
-        if isValid {
-            guard let user = userService.checkUser(login: login) else {
-                showAlert(message: "Пользователь не найден")
-                return
+        delegate?.checkCredentials(
+            email: login,
+            password: password
+        ) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                guard let user = self.userService.checkUser(login: login) else {
+                    self.showAlert(message: "Пользователь не найден")
+                    return
+                }
+                
+                self.coordinator?.showProfile(user: user)
+                
+            case .failure(let error):
+                
+                let nsError = error as NSError
+
+                    if nsError.code == AuthErrorCode.userNotFound.rawValue {
+
+                        self.delegate?.signUp(
+                            email: login,
+                            password: password
+                        ) { [weak self] signUpResult in
+
+                            guard let self = self else { return }
+                            
+                            switch signUpResult {
+
+                            case .success:
+                                guard let user = self.userService.checkUser(login: login) else {
+                                    self.showAlert(message: "Пользователь зарегистрирован, но профиль не найден")
+                                    return
+
+                                }
+
+                                self.coordinator?.showProfile(user: user)
+
+                            case .failure(let error):
+                                self.showAlert(message: error.localizedDescription)
+                            }
+                        }
+                        
+                    } else {
+                        
+                        self.showAlert(message: error.localizedDescription)
+                        
+                    }
+                
             }
             
-            coordinator?.showProfile(user: user)
-
-        } else {
-            showAlert(message: "Неверный логин и пароль")
         }
+            
         
     } // touchLoginButton()
+    
+    @objc private func touchSignUpButton() {
+
+        guard let email = loginField.text, !email.isEmpty else {
+            showAlert(message: "Введите email")
+            return
+        }
+
+        guard let password = passwordField.text, !password.isEmpty else {
+            showAlert(message: "Введите пароль")
+            return
+        }
+
+        delegate?.signUp(
+            email: email,
+            password: password
+        ) { [weak self] result in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                self.showAlert(
+                    title: "Успех! 😃",
+                    message: "Пользователь успешно зарегистрирован!"
+                )
+
+            case .failure(let error):
+                self.showAlert(message: error.localizedDescription)
+            }
+        }
+        
+    } // touchSignUpButton()
 
     // MARK: - Event Handlers: Keyboard
     @objc private func keyboardShow(notification: NSNotification) {
