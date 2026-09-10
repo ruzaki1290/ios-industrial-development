@@ -5,6 +5,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,6 +40,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
         
     } // application
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        do {
+            try Auth.auth().signOut()
+            print("Firebase user signed out")
+        } catch {
+            print("Firebase sign out error: \(error.localizedDescription)")
+        }
+    }
     
 } // AppDelegate
 
