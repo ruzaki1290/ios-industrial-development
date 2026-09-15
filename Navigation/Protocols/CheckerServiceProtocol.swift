@@ -1,17 +1,17 @@
 //
-//  LoginViewControllerDelegate.swift
+//  CheckerServiceProtocol.swift
 //  Navigation
 //
-
 import Foundation
 
-protocol LoginViewControllerDelegate: AnyObject {
+protocol CheckerServiceProtocol {
     
     func checkCredentials(
         email: String,
         password: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
     func signUp(
         email: String,
         password: String,
