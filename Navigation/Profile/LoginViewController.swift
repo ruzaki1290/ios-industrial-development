@@ -228,64 +228,38 @@ final class LoginViewController: UIViewController {
             return
         }
         
-        
-        let password = passwordField.text ?? ""
+        guard let password = passwordField.text, !password.isEmpty else {
+            showAlert(message: "Введите пароль")
+            return
+        }
         
         delegate?.checkCredentials(
             email: login,
             password: password
         ) { [weak self] result in
+            
             guard let self = self else { return }
             
             switch result {
+                
             case .success:
-                guard let user = self.userService.checkUser(login: login) else {
-                    self.showAlert(message: "Пользователь не найден")
-                    return
-                }
+                
+                let user = User(
+                    login: login,
+                    fullName: "iOS Student",
+                    avatar: UIImage(named: "firebase_bear") ?? UIImage(),
+                    status: "Let's build something!"
+                    )
                 
                 self.coordinator?.showProfile(user: user)
                 
             case .failure(let error):
-                
-                let nsError = error as NSError
-
-                    if nsError.code == AuthErrorCode.userNotFound.rawValue {
-
-                        self.delegate?.signUp(
-                            email: login,
-                            password: password
-                        ) { [weak self] signUpResult in
-
-                            guard let self = self else { return }
-                            
-                            switch signUpResult {
-
-                            case .success:
-                                guard let user = self.userService.checkUser(login: login) else {
-                                    self.showAlert(message: "Пользователь зарегистрирован, но профиль не найден")
-                                    return
-
-                                }
-
-                                self.coordinator?.showProfile(user: user)
-
-                            case .failure(let error):
-                                self.showAlert(message: error.localizedDescription)
-                            }
-                        }
-                        
-                    } else {
-                        
-                        self.showAlert(message: error.localizedDescription)
-                        
-                    }
+                self.showAlert(message: error.localizedDescription)
                 
             }
             
         }
             
-        
     } // touchLoginButton()
     
     @objc private func touchSignUpButton() {
