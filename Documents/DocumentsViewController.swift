@@ -9,6 +9,8 @@ final class DocumentsViewController: UIViewController {
     
     private let tableView = UITableView()
     
+    private var files: [URL] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -17,6 +19,7 @@ final class DocumentsViewController: UIViewController {
         
         setupNavigationBar()
         setupTableView()
+        loadFiles()
         
     }
     
@@ -38,6 +41,21 @@ final class DocumentsViewController: UIViewController {
             view.addSubview(tableView)
 
         }
+    
+    private func loadFiles() {
+        
+        let fileManager = FileManager.default
+        
+        guard let documentsURL = fileManager.urls(
+            for: .documentDirectory,
+            in: .userDomainMask
+        ).first else {
+            return
+        }
+        
+        print(documentsURL)
+        
+    }
     
     @objc private func addPhoto() {
             // Здесь следующим шагом откроем Image Picker
