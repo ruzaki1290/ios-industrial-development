@@ -243,13 +243,12 @@ final class LoginViewController: UIViewController {
             switch result {
                 
             case .success:
-                
                 let user = User(
                     login: login,
                     fullName: "iOS Student",
                     avatar: UIImage(named: "firebase_bear") ?? UIImage(),
                     status: "Let's build something!"
-                    )
+                )
                 
                 self.coordinator?.showProfile(user: user)
                 
@@ -283,10 +282,14 @@ final class LoginViewController: UIViewController {
             
             switch result {
             case .success:
-                self.showAlert(
-                    title: "Успех! 😃",
-                    message: "Пользователь успешно зарегистрирован!"
+                let user = User(
+                    login: email,
+                    fullName: email,
+                    avatar: UIImage(named: "firebase_bear") ?? UIImage(),
+                    status: "New user"
                 )
+
+                self.coordinator?.showProfile(user: user)
 
             case .failure(let error):
                 self.showAlert(message: error.localizedDescription)
