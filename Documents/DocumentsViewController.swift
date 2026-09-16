@@ -144,8 +144,7 @@ extension DocumentsViewController: UITableViewDataSource {
     ) -> UITableViewCell {
         
         let cell = UITableViewCell(
-            style: .default,
-            reuseIdentifier: nil
+            style: .default, reuseIdentifier: nil
         )
         
         let fileURL = files[indexPath.row]
@@ -157,4 +156,28 @@ extension DocumentsViewController: UITableViewDataSource {
         
     }
     
-}
+    func tableView(
+        _ tableView: UITableView,
+        commit editingStyle: UITableViewCell.EditingStyle,
+        forRowAt indexPath: IndexPath
+    ) {
+        
+        guard editingStyle == .delete else {
+            return
+        }
+        
+        let fileURL = files[indexPath.row]
+        
+        do {
+            try FileManager.default.removeItem(at: fileURL)
+            files.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        } catch {
+            print("Ошибка удаления:", error)
+        }
+        
+    }
+    
+} // DocumentsViewController: UITableViewDataSource
+
+
