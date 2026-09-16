@@ -127,7 +127,7 @@ extension DocumentsViewController: UIImagePickerControllerDelegate,
     } // imagePickerController
     
 
-} // extention DocumentsViewController
+} // extension DocumentsViewController
 
 extension DocumentsViewController: UITableViewDataSource {
     
