@@ -8,10 +8,10 @@ import UIKit
 final class DocumentsViewController: UIViewController {
     
     private let tableView = UITableView()
-    
     private var files: [URL] = []
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
@@ -38,6 +38,8 @@ final class DocumentsViewController: UIViewController {
         
         tableView.frame = view.bounds
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        tableView.dataSource = self
+        
         view.addSubview(tableView)
         
     }
@@ -78,6 +80,7 @@ final class DocumentsViewController: UIViewController {
     
     
 } // DocumentsViewController: UIViewController
+
 
 extension DocumentsViewController: UIImagePickerControllerDelegate,
                                    UINavigationControllerDelegate {
@@ -122,5 +125,36 @@ extension DocumentsViewController: UIImagePickerControllerDelegate,
         }
         
     } // imagePickerController
+    
 
-} // DocumentsViewController
+} // extention DocumentsViewController
+
+extension DocumentsViewController: UITableViewDataSource {
+    
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
+        return files.count
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        
+        let cell = UITableViewCell(
+            style: .default,
+            reuseIdentifier: nil
+        )
+        
+        let fileURL = files[indexPath.row]
+        
+        cell.textLabel?.text = fileURL.lastPathComponent
+        cell.imageView?.image = UIImage(contentsOfFile: fileURL.path)
+        
+        return cell
+        
+    }
+    
+}
