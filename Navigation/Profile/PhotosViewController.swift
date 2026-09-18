@@ -77,6 +77,7 @@ class PhotosViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         imagePublisher.removeSubscription(for: self)
     }
+    
 }
 
 // MARK: - Extensions

@@ -21,8 +21,8 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         
-        let documentsVC = DocumentsViewController()
-           let navigationController = UINavigationController(rootViewController: documentsVC)
+        let passwordVC = PasswordViewController()
+           let navigationController = UINavigationController(rootViewController: passwordVC)
         
            window.rootViewController = navigationController
            window.makeKeyAndVisible()
