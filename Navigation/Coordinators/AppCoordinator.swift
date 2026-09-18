@@ -21,6 +21,13 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         
+        let documentsVC = DocumentsViewController()
+           let navigationController = UINavigationController(rootViewController: documentsVC)
+        
+           window.rootViewController = navigationController
+           window.makeKeyAndVisible()
+           return
+        
         profileCoordinator = ProfileCoordinator(
             navigationController: UINavigationController()
         )
