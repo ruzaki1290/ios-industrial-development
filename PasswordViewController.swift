@@ -4,12 +4,15 @@
 //
 
 import UIKit
+import KeychainSwift
 
 final class PasswordViewController: UIViewController {
     
     private let passwordTextField = UITextField()
     private let submitButton = UIButton(type: .system)
     private var firstPassword: String?
+    
+    private let keychain = KeychainSwift()
     
     override func viewDidLoad() {
         
@@ -19,6 +22,7 @@ final class PasswordViewController: UIViewController {
         setUpPasswordTextField()
         setupSubmitButton()
         setupConstraints()
+        setupPasswordState()
         
     }
     
@@ -53,6 +57,14 @@ final class PasswordViewController: UIViewController {
         )
         
         view.addSubview(submitButton)
+        
+    }
+    
+    private func setupPasswordState() {
+        
+        if keychain.get("userPassword") != nil {
+            submitButton.setTitle("Введите пароль", for: .normal)
+        }
         
     }
     
@@ -109,7 +121,8 @@ final class PasswordViewController: UIViewController {
         if let firstPassword = firstPassword {
             
             if passwordText == firstPassword {
-                print("Пароли совпадают! ✅")
+                keychain.set(passwordText, forKey: "userPassword")
+                print("Пароли совпадают! ✅ Пароль сохранен в Keychain 🔑")
             } else {
                 print("Пароли не совпадают! ❌")
                 
