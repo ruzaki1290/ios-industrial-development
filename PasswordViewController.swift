@@ -64,6 +64,7 @@ final class PasswordViewController: UIViewController {
         
         if keychain.get("userPassword") != nil {
             submitButton.setTitle("Введите пароль", for: .normal)
+            print(keychain.get("userPassword") ?? "Пароль не найден")
         }
         
     }
@@ -115,6 +116,17 @@ final class PasswordViewController: UIViewController {
         }
         guard passwordText.count >= 4 else {
             print("Пароль должен содержать минимум 4 символа! ❌")
+            return
+        }
+        
+        if let savedPassword = keychain.get("userPassword") {
+            
+            if passwordText == savedPassword {
+                print("Пароль верный! ✅")
+            } else {
+                print("Неверный пароль! ❌")
+            }
+            
             return
         }
         
