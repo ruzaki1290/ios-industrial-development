@@ -21,12 +21,12 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         
-        let passwordVC = PasswordViewController()
-           let navigationController = UINavigationController(rootViewController: passwordVC)
-        
-           window.rootViewController = navigationController
-           window.makeKeyAndVisible()
-           return
+//        let passwordVC = PasswordViewController()
+//           let navigationController = UINavigationController(rootViewController: passwordVC)
+//        
+//           window.rootViewController = navigationController
+//           window.makeKeyAndVisible()
+//           return
         
         profileCoordinator = ProfileCoordinator(
             navigationController: UINavigationController()
