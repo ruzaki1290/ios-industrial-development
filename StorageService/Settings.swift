@@ -5,11 +5,11 @@
 
 import Foundation
 
-final class Settings {
+public final class Settings {
     
-    static let shared = Settings()
+    public static let shared = Settings()
     
-    var isSortingEnabled: Bool {
+    public var isSortingEnabled: Bool {
         get {
             UserDefaults.standard.bool(forKey: "isSortingEnabled")
         }
