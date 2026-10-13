@@ -14,6 +14,8 @@ final class PasswordViewController: UIViewController {
     
     private let keychain = KeychainSwift()
     
+    var onPasswordSuccess: (() -> Void)?
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -123,6 +125,7 @@ final class PasswordViewController: UIViewController {
             
             if passwordText == savedPassword {
                 print("Пароль верный! ✅")
+                onPasswordSuccess?()
             } else {
                 print("Неверный пароль! ❌")
             }
@@ -135,6 +138,7 @@ final class PasswordViewController: UIViewController {
             if passwordText == firstPassword {
                 keychain.set(passwordText, forKey: "userPassword")
                 print("Пароли совпадают! ✅ Пароль сохранен в Keychain 🔑")
+                onPasswordSuccess?()
             } else {
                 print("Пароли не совпадают! ❌")
                 

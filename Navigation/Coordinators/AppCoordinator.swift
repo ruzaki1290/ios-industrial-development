@@ -21,35 +21,42 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         
-//        let passwordVC = PasswordViewController()
-//           let navigationController = UINavigationController(rootViewController: passwordVC)
-//        
-//           window.rootViewController = navigationController
-//           window.makeKeyAndVisible()
-//           return
+        let passwordVC = PasswordViewController()
+        
+        passwordVC.onPasswordSuccess = { [weak self] in
+            self?.showMainApp()
+        }
+        
+        let navigationController = UINavigationController(rootViewController: passwordVC)
+        
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
+        
+    } // start()
+    
+    private func showMainApp() {
         
         profileCoordinator = ProfileCoordinator(
             navigationController: UINavigationController()
         )
-        
+
         profileCoordinator?.start()
-        
-        
+
         feedCoordinator = FeedCoordinator(
             navigationController: UINavigationController()
         )
-        
+
         feedCoordinator?.start()
-        
+
         tabBarController.viewControllers = [
             profileCoordinator!.navigationController,
             feedCoordinator!.navigationController
         ]
-        
+
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
         
-    } // start()
+    } // showMainApp()
     
     
 } // AppCoordinator
