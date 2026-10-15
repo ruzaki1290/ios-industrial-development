@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import StorageService
 
 final class DocumentsViewController: UIViewController {
     
@@ -20,6 +21,13 @@ final class DocumentsViewController: UIViewController {
         setupNavigationBar()
         setupTableView()
         loadFiles()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sortingChanged),
+            name: Notification.Name("SortingChanged"),
+            object: nil
+        )
         
     }
     
@@ -60,6 +68,14 @@ final class DocumentsViewController: UIViewController {
                     at: documentsURL,
                     includingPropertiesForKeys: nil
                 )
+                
+                if Settings.shared.isSortingEnabled {
+                    files.sort {
+                        $0.lastPathComponent.localizedCaseInsensitiveCompare(
+                            $1.lastPathComponent
+                        ) == .orderedAscending
+                    }
+                }
             
             print("📁 DOCUMENTS FILES:", files)
             
@@ -77,6 +93,11 @@ final class DocumentsViewController: UIViewController {
             present(imagePicker, animated: true)
         
         }
+    
+    @objc private func sortingChanged() {
+        loadFiles()
+        tableView.reloadData()
+    }
     
     
 } // DocumentsViewController: UIViewController

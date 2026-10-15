@@ -11,7 +11,11 @@ public final class Settings {
     
     public var isSortingEnabled: Bool {
         get {
-            UserDefaults.standard.bool(forKey: "isSortingEnabled")
+            if UserDefaults.standard.object(forKey: "isSortingEnabled") == nil {
+                return true
+            }
+            
+            return UserDefaults.standard.bool(forKey: "isSortingEnabled")
         }
         
         set {

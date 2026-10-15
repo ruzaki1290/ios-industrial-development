@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import StorageService
 
 final class AppCoordinator: Coordinator {
     
@@ -47,10 +48,34 @@ final class AppCoordinator: Coordinator {
         )
 
         feedCoordinator?.start()
+        
+        let documentsVC = DocumentsViewController()
+        documentsVC.tabBarItem = UITabBarItem(
+            title: "Documents",
+            image: UIImage(systemName: "folder"),
+            tag: 2
+        )
+
+        let documentsNavigationController = UINavigationController(
+            rootViewController: documentsVC
+        )
+        
+        let settingsVC = SettingsViewController()
+        settingsVC.tabBarItem = UITabBarItem(
+            title: "Settings",
+            image: UIImage(systemName: "gear"),
+            tag: 3
+        )
+
+        let settingsNavigationController = UINavigationController(
+            rootViewController: settingsVC
+        )
 
         tabBarController.viewControllers = [
             profileCoordinator!.navigationController,
-            feedCoordinator!.navigationController
+            feedCoordinator!.navigationController,
+            documentsNavigationController,
+            settingsNavigationController
         ]
 
         window.rootViewController = tabBarController
