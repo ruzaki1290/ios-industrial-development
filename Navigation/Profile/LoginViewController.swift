@@ -41,7 +41,7 @@ final class LoginViewController: UIViewController {
         stack.layer.borderColor = UIColor.lightGray.cgColor
         stack.layer.borderWidth = 0.5
         stack.layer.cornerRadius = LayoutConstants.cornerRadius
-        stack.distribution = .fillProportionally
+        stack.distribution = .fillEqually
         stack.backgroundColor = .systemGray6
         stack.clipsToBounds = true
         return stack
@@ -131,7 +131,7 @@ final class LoginViewController: UIViewController {
         
         setupViews()
         
-    }
+    } // viewDidLoad()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -151,6 +151,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Setup
     private func setupViews() {
+                
         view.addSubview(loginScrollView)
         loginScrollView.addSubview(contentView)
         
@@ -161,9 +162,10 @@ final class LoginViewController: UIViewController {
         
         loginField.delegate = self
         passwordField.delegate = self
-        
+                
         setupConstraints()
-    }
+        
+    } // setupViews()
 
     private func setupConstraints() {
         
@@ -191,11 +193,12 @@ final class LoginViewController: UIViewController {
             loginStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: LayoutConstants.trailingMargin),
             loginStackView.heightAnchor.constraint(equalToConstant: 100),
             
+            loginField.heightAnchor.constraint(equalToConstant: 50),
+            passwordField.heightAnchor.constraint(equalToConstant: 50),
+            
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             loginButton.widthAnchor.constraint(equalToConstant: 200),
             loginButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20),
-            
             loginButton.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: 20),
 
             signUpButton.heightAnchor.constraint(equalToConstant: 50),

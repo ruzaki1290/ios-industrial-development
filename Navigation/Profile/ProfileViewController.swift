@@ -12,6 +12,19 @@ final class ProfileViewController: UIViewController {
     
     private let viewModel: ProfileViewModel
     
+    private var displayedPosts: [Post] {
+        
+        if Settings.shared.isSortingEnabled {
+            return postExamples.sorted { firstPost, secondPost in
+                return firstPost.date > secondPost.date
+                
+            }
+        } else {
+                return postExamples
+            }
+        }
+        
+    
     static let headerIdent = "header"
     static let photoIdent = "photo"
     static let postIdent = "post"
@@ -110,7 +123,7 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0: return 1
-        case 1: return postExamples.count
+        case 1: return displayedPosts.count
         default:
             assertionFailure("no registered section")
             return 1
@@ -131,7 +144,7 @@ extension ProfileViewController: UITableViewDelegate {
             return cell
         case 1:
             let cell = Self.postTableView.dequeueReusableCell(withIdentifier: Self.postIdent, for: indexPath) as! PostTableViewCell
-            cell.configPostArray(post: postExamples[indexPath.row])
+            cell.configPostArray(post: displayedPosts[indexPath.row])
             return cell
         default:
             assertionFailure("no registered section")
